@@ -1,17 +1,31 @@
 <template>
-  <article class="article">
-    <div class="single">
-      <h1 class="post-title">{{ post.fields.title }}</h1>
-      <p class="post-created-at">{{ formatDate(post.sys.createdAt) }}</p>
-      <div class="post-content" v-html="$md.render(post.fields.content)"></div>
-    </div>
-  </article>
+  <div class="wrapper">
+  <Header/>
+    <section class="latest__posts">
+      <article class="article">
+        <div class="single">
+          <h1 class="post-title">{{ post.fields.title }}</h1>
+          <p class="post-created-at">{{ formatDate(post.sys.createdAt) }}</p>
+          <div class="post-content" v-html="$md.render(post.fields.content)"></div>
+        </div>
+      </article>
+      <Aside/>
+    </section>
+  <Footer/>
+  </div>
 </template>
 
 <script>
 import client from '~/plugins/contentful'
-
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import Aside from '../../components/Aside';
 export default {
+  components : {
+    Header,
+    Footer,
+    Aside,
+  },
   asyncData({ params, error, payload }) {
     if (payload) return { post: payload }
     return client
@@ -46,6 +60,8 @@ export default {
 
 <style lang="scss">
 article.article {
+  width: percentage(800/1200);
+  margin: 0 auto 0 0;
   padding: 10px;
   .single {
     max-width: 900px;

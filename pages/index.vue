@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
-    <section class="latest-posts">
+  <Header/>
+    <section class="latest__posts">
       <div class="posts">
         <nuxt-link :to="'posts/'+post.fields.slug" class="post" v-for="(post, index) in posts" :key="index">
           <div class="thumb">
@@ -12,13 +13,23 @@
           </div>
         </nuxt-link>
       </div>
+      <Aside/>
     </section>
+  <Footer/>
   </div>
 </template>
 
 <script>
 import client from '~/plugins/contentful';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import Aside from '../components/Aside';
 export default {
+  components : {
+    Header,
+    Footer,
+    Aside,
+  },
   asyncData({ params }) {
     return client
       .getEntries({
@@ -29,9 +40,6 @@ export default {
         return { posts: entries.items }
       })
       .catch(e => console.log(e))
-  },
-  head: {
-    title: '記事一覧',
   },
   methods: {
     formatDate(iso) {
@@ -47,13 +55,15 @@ export default {
 
 <style lang="scss">
 .wrapper {
-  padding: 30px 0;
   background: #eee;
 }
-section.latest-posts {
+section.latest__posts {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
   .posts {
-    max-width: 900px;
-    margin: 0 auto;
+    width: percentage(850/1200);
+    margin: 0 auto 0 0;
     a.post {
       display: flex;
       margin: 0 0 30px;
